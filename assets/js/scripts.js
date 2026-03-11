@@ -1,8 +1,13 @@
 // Navigation Scroll Effect
 const navbar = document.getElementById('navbar');
+const heroSection = document.getElementById('hero');
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
+    // Get the bottom offset of the hero section for the threshold
+    const heroBottom = heroSection ? heroSection.offsetTop + heroSection.offsetHeight : 50;
+
+    // Add the solid background only after scrolling past the hero section
+    if (window.scrollY > heroBottom - 80) { // 80px buffer for smooth transition before leaving the section
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');

@@ -210,60 +210,81 @@ p {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    height: 500vh;
+    /* Scrollytelling scroll area */
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    background-color: var(--bg-black);
 }
 
-.hero-bg {
-    position: absolute;
+.hero-sticky-container {
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
-    height: 120%;
-    /* For parallax */
-    background: url('../images/hero_highway_led_1773247543666.png') center/cover no-repeat;
-    z-index: 1;
-    content: '';
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 5%;
+    overflow: hidden;
 }
 
-.hero::after {
-    content: '';
+#hero-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(11, 11, 11, 0.3) 0%, rgba(11, 11, 11, 1) 100%);
-    z-index: 2;
+    z-index: 0;
+    transform: translateZ(0);
+    /* Hardware acceleration */
+}
+
+/* Gradient overlay for readability removed */
+.hero-sticky-container::after {
+    display: none;
+}
+
+.hero-bg {
+    display: none;
+}
+
+.hero::after {
+    display: none;
 }
 
 .hero-content {
     position: relative;
     z-index: 10;
-    text-align: center;
+    text-align: left;
     max-width: 900px;
-    padding: 0 1rem;
+    width: 100%;
+    padding: 0 1.5rem;
 }
 
 .hero-title {
-    margin-bottom: 1rem;
-    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    margin-bottom: 0.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 5.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtext {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     margin-bottom: 2.5rem;
     color: #e0e0e0;
+    font-weight: 500;
+    text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 .hero-buttons {
     display: flex;
     gap: 1.5rem;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .scroll-indicator {
@@ -1047,6 +1068,10 @@ p {
         font-size: 3rem;
     }
 
+    .hero-title {
+        font-size: 4.5rem;
+    }
+
     h2 {
         font-size: 2.5rem;
     }
@@ -1067,6 +1092,16 @@ p {
 
     .hero-buttons {
         flex-direction: column;
+        justify-content: center;
+    }
+
+    .hero-sticky-container {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    .hero-content {
+        text-align: center;
     }
 
     .cta-actions {
@@ -1079,6 +1114,14 @@ p {
 
     h1 {
         font-size: 2.5rem;
+    }
+
+    .hero-title {
+        font-size: 3.2rem;
+    }
+
+    .hero-subtext {
+        font-size: 1.2rem;
     }
 
     .huge-text {
