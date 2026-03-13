@@ -65,6 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
         formationObserver.observe(formationSection);
     }
 
+    // Transition Mode Carousel functionality (Scrolling Type)
+    const transitionCarousel = document.getElementById('transition-carousel');
+    if (transitionCarousel) {
+        const screens = transitionCarousel.querySelectorAll('.screen-box');
+        // Initial setup for positions
+        let positions = ['left', 'center', 'right'];
+
+        // Function to update classes based on positions array
+        const updateCarousel = () => {
+            screens.forEach((screen, i) => {
+                screen.className = 'screen-box ' + (positions[i] === 'center' ? 'primary-screen' : `side-screen ${positions[i]}`);
+            });
+        };
+
+        // Auto-cycle every 3.5 seconds
+        let carouselInterval = setInterval(() => {
+            positions.unshift(positions.pop()); // Rotate the array
+            updateCarousel();
+        }, 3500);
+
+        // Allow manual clicking to cycle
+        screens.forEach((screen, i) => {
+            screen.addEventListener('click', () => {
+                // If they click on the right screen, move right
+                if (positions[i] === 'right') {
+                    positions.unshift(positions.pop());
+                } 
+                // If they click on the left screen, move left
+                else if (positions[i] === 'left') {
+                    positions.push(positions.shift());
+                }
+                updateCarousel();
+                
+                // Reset interval
+                clearInterval(carouselInterval);
+                carouselInterval = setInterval(() => {
+                    positions.unshift(positions.pop());
+                    updateCarousel();
+                }, 3500);
+            });
+        });
+    }
+
     // Auto-cycle map locations
     const dots = document.querySelectorAll('.pulse-dot');
     let activeDotIndex = 0;
