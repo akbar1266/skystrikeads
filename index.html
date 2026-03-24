@@ -18,17 +18,29 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
-        <div class="logo">SKYSTRIKE<span>ADS</span></div>
+        <a href="#hero" class="logo"><img src="assets/logo.png" alt="SkyStrike Ads"></a>
         <ul class="nav-links">
-            <li><a href="#showcase">Showcase</a></li>
+            <li><a href="#why-us">Why Us</a></li>
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#locations">Locations</a></li>
-            <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
-        <div class="nav-actions">
-            <button class="btn btn-outline" onclick="scrollToSection('contact')">Book Now</button>
-        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+
+    <!-- Mobile Menu Dropdown -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="#why-us" onclick="closeMobileMenu()">Why Us</a></li>
+            <li><a href="#pricing" onclick="closeMobileMenu()">Pricing</a></li>
+            <li><a href="#locations" onclick="closeMobileMenu()">Locations</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+    </div>
 
     <!-- Hero Section -->
     <header class="hero" id="hero">
@@ -36,12 +48,12 @@
             <canvas id="hero-canvas"></canvas>
             <div class="hero-bg parallax-bg"></div>
             <div class="hero-content">
-                <h1 class="hero-title">Dominate the City With Giant Digital Screens</h1>
+                <h1 class="hero-title">Sky Strike Ads transforms the sky into your brand’s stage.</h1>
                 <p class="hero-subtext">High-impact outdoor LED advertising across Hyderabad with
                     ultra-bright 4K LED displays.</p>
                 <div class="hero-buttons">
                     <a href="#locations" class="btn btn-primary glow-effect">View Screen Locations</a>
-                    <a href="#contact" class="btn btn-outline glow-outline">Book Ad Slot</a>
+                    <a href="#pricing" class="btn btn-outline glow-outline">Book Ad Slot</a>
                 </div>
             </div>
             <div class="scroll-indicator">
@@ -51,104 +63,192 @@
         </div>
     </header>
 
-    <!-- Interactive Screen Showcase -->
-    <section class="section showcase dark-charcoal" id="showcase">
+    <!-- About Section -->
+    <section class="section about-us black-bg" id="why-us">
         <div class="container">
             <div class="section-header text-center blur-appear">
-                <h2>Interactive Screen Showcase</h2>
-                <p>Premium LED displays for every scale.</p>
+                <h2>About Sky Strike Ads</h2>
+                <p>High-impact and unique advertising experiences.</p>
             </div>
-            <div class="showcase-grid">
-                <!-- Card 1 -->
-                <div class="showcase-card gradient-border glow-hover blur-appear">
-                    <div class="card-inner">
-                        <div class="screen-visual single"></div>
-                        <div class="card-content">
-                            <h3>10 × 20 ft Single Screen</h3>
-                            <ul class="specs">
-                                <li><span>Resolution:</span> 4K Ultra HD</li>
-                                <li><span>Format:</span> MP4 / Image</li>
-                                <li><span>Brightness:</span> 10,000 Nits</li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="about-content blur-appear delay-1 glass-panel text-left"
+                style="max-width: 1200px; margin: 0 auto; padding: 3rem; border-radius: 20px; display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;">
+                <div class="about-text" style="flex: 1; min-width: 300px;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem; color: #e0e0e0;">
+                        Sky Strike Ads is Kerala’s first drone advertising company, proudly based in Kochi and operating
+                        across India to deliver high-impact and unique aerial advertising experiences. Using advanced
+                        drone technology, we help brands stand out with eye-catching promotions that capture attention
+                        from the sky. Our certified drone pilots ensure safe, professional, and fully compliant
+                        operations, providing businesses with reliable and innovative advertising solutions.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: #e0e0e0;">
+                        With our innovative approach, we help businesses achieve maximum brand visibility and create
+                        memorable visual impressions for their audience. As an added benefit, we also provide a free
+                        social
+                        media promotion video captured using a drone, helping your brand gain additional reach and
+                        engagement online.
+                    </p>
                 </div>
-                <!-- Card 2 -->
-                <div class="showcase-card gradient-border glow-hover blur-appear delay-1">
-                    <div class="card-inner">
-                        <div class="screen-visual triple"></div>
-                        <div class="card-content">
-                            <h3>Triple Screen Formation</h3>
-                            <ul class="specs">
-                                <li><span>Resolution:</span> 4K Wrap-around</li>
-                                <li><span>Format:</span> Immersive 3D/Video</li>
-                                <li><span>Impact:</span> High Traffic Impact</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="showcase-card gradient-border glow-hover blur-appear delay-2">
-                    <div class="card-inner">
-                        <div class="screen-visual five"></div>
-                        <div class="card-content">
-                            <h3>Five Screen Formation</h3>
-                            <ul class="specs">
-                                <li><span>Area:</span> Highway Junctions</li>
-                                <li><span>Format:</span> Synced Motion</li>
-                                <li><span>Visibility:</span> 1km+ Range</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 4 -->
-                <div class="showcase-card gradient-border glow-hover blur-appear delay-3">
-                    <div class="card-inner">
-                        <div class="screen-visual six"></div>
-                        <div class="card-content">
-                            <h3>Six Screen Mega Display</h3>
-                            <ul class="specs">
-                                <li><span>Layout:</span> Massive Tower</li>
-                                <li><span>Feature:</span> Architectural Flow</li>
-                                <li><span>Exclusive:</span> Brand Takeover</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="about-image" style="flex: 1; min-width: 300px; text-align: center;">
+                    <img src="assets/images/led_screen_demo_1773247563502.png" alt="Sky Strike Ads Drone Advertisement"
+                        style="width: 100%; max-width: 500px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255, 255, 255, 0.1);">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Screen Formation Visual Section -->
-    <section class="section formation-visual black-bg">
-        <div class="container">
-            <div class="formation-container">
-                <div class="formation-text blur-appear">
-                    <h2>Seamless Formations</h2>
-                    <p>Experience synchronized advertising across multiple screens to create an unforgettable visual
-                        spectacle.</p>
+    <!-- Services Section Cinematic -->
+    <section class="section services-cinematic black-bg parallax-section" id="services">
+        <div class="cinematic-bg parallax-element"></div>
+
+        <div class="cinematic-carousel-wrapper">
+            <h3 class="cinematic-heading blur-appear">OUR SERVICES</h3>
+
+            <div class="cinematic-scroll-track" id="cinematic-track">
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/led_screen_demo_1773247563502.png');">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Aerial LED Advertising</h4>
+                                    <p>Traffic heavily places product launch and promotions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="formation-animation">
-                    <div class="screen-box primary-screen"></div>
-                    <div class="screen-box side-screen left"></div>
-                    <div class="screen-box side-screen right"></div>
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/custom_campaign_bg_1773247617441.png');">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Brand Promotions</h4>
+                                    <p>Advertising brand promotions happens and concerts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/hero_highway_led_1773247543666.png');">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Event Advertising</h4>
+                                    <p>Advertising ad launches, promotional branding moments.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/custom_campaign_bg_1773247617441.png');">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Political Campaign Promotions</h4>
+                                    <p>Real estate Project promoting Residential projects.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/led_screen_demo_1773247563502.png'); filter: hue-rotate(45deg);">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Jewellery & Textile</h4>
+                                    <p>Heavy footfall near promotion near commercial hubs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cinematic-card-container">
+                    <div class="js-3d-wrapper">
+                        <div class="cinematic-card-floater">
+                            <div class="cinematic-card">
+                                <div class="cinematic-card-img"
+                                    style="background-image: url('assets/images/hero_highway_led_1773247543666.png'); filter: hue-rotate(-30deg);">
+                                </div>
+                                <div class="cinematic-card-body">
+                                    <h4>Birthday Wishes</h4>
+                                    <p>Brand new and textile promotions birthday and personal messages.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="scroll-instruction text-center blur-appear delay-1">
+                <span class="pulse-text">← Swipe horizontally to explore →</span>
             </div>
         </div>
     </section>
+
 
     <!-- Premium Pricing Section -->
     <section class="section pricing dark-charcoal" id="pricing">
         <div class="container">
             <div class="section-header text-center blur-appear">
                 <h2>Premium Pricing</h2>
-                <p>Transparent rates for maximum visibility.</p>
+                <p class="text-red" style="font-size: 1.5rem;">Date and time may be changed by whether condition.</p>
             </div>
             <div class="pricing-grid">
+                <div class="pricing-card glass-panel featured glow-border blur-appear delay-1">
+                    <div class="badge">Most Popular</div>
+                    <h4>4k Resolution</h4>
+                    <div class="price">
+                        <span class="currency">₹</span><span class="amount">95,000</span>
+                    </div>
+                    <ul class="features">
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>10 × 20 ft Screen</li>
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg> MP4 Format Support</li>
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg> 25-minute show cycle</li>
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>Prime outdoor locations</li>
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg> Free social media promotion video</li>
+                    </ul>
+                    <a href="https://wa.me/918921875373?text=Hello!%20I%20am%20interested%20in%20booking%20the%20'4k%20Resolution'%20plan%20for%20%E2%82%B995,000.%20Please%20provide%20more%20information."
+                        target="_blank" class="btn btn-primary full-width glow-effect">Book Formation</a>
+                </div>
+
                 <div class="pricing-card glass-panel blur-appear">
                     <h4>10 × 20 ft Screen</h4>
                     <div class="price">
-                        <span class="currency">₹</span><span class="amount">75,000</span><span class="tax">+ GST</span>
+                        <span class="currency">₹</span><span class="amount">1,80,000</span>
                     </div>
                     <ul class="features">
                         <li><svg viewBox="0 0 24 24">
@@ -159,55 +259,16 @@
                             </svg> MP4 Format Support</li>
                         <li><svg viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg> 22-minute show cycle</li>
+                            </svg> 50-minute show cycle</li>
                         <li><svg viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                             </svg> Prime outdoor locations</li>
+                        <li><svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg> Free social media promotion video</li>
                     </ul>
-                    <button class="btn btn-outline full-width">Select Plan</button>
-                </div>
-
-                <div class="pricing-card glass-panel featured glow-border blur-appear delay-1">
-                    <div class="badge">Most Popular</div>
-                    <h4>Triple Formation</h4>
-                    <div class="price">
-                        <span class="currency">₹</span><span class="amount">1,80,000</span><span class="tax">+
-                            GST</span>
-                    </div>
-                    <ul class="features">
-                        <li><svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg> 4K Wrap-around Sync</li>
-                        <li><svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg> 3D/Video Formatting</li>
-                        <li><svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg> 15-minute show cycle</li>
-                        <li><svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg> Highway Junctions</li>
-                    </ul>
-                    <button class="btn btn-primary full-width glow-effect">Book Formation</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Advertisement Demo Section -->
-    <section class="section demo black-bg parallax-section">
-        <div class="demo-bg parallax-element"></div>
-        <div class="demo-overlay"></div>
-        <div class="container relative z-index-10">
-            <div class="demo-content blur-appear">
-                <h2>Experience The Impact</h2>
-                <p>See your brand towering over the city.</p>
-                <div class="video-frame glass-panel glowing-aura">
-                    <div class="play-button">
-                        <svg viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M8 5v14l11-7z" />
-                        </svg>
-                    </div>
+                    <a href="https://wa.me/918921875373?text=Hello!%20I%20am%20interested%20in%20booking%20the%20'10%20%C3%97%2020%20ft%20Screen'%20plan%20for%20%E2%82%B91,80,000.%20Please%20provide%20more%20information."
+                        target="_blank" class="btn btn-outline full-width">Book Formation</a>
                 </div>
             </div>
         </div>
@@ -217,143 +278,42 @@
     <section class="section locations dark-charcoal" id="locations">
         <div class="container">
             <div class="section-header text-center blur-appear">
-                <h2>Prime Locations in Hyderabad</h2>
+                <h2>Prime Locations in Kochi</h2>
                 <p>Strategically placed on major traffic corridors.</p>
             </div>
-            <div class="map-container blur-appear delay-1 glass-panel">
-                <div class="map-ui">
-                    <div class="pulse-dot" style="top: 30%; left: 40%;"><span>Madhapur</span></div>
-                    <div class="pulse-dot" style="top: 50%; left: 60%;"><span>Jubilee Hills</span></div>
-                    <div class="pulse-dot active" style="top: 70%; left: 30%;"><span>Gachibowli</span></div>
-                    <div class="pulse-dot" style="top: 20%; left: 70%;"><span>Banjara Hills</span></div>
-                    <!-- Minimalist abstracted map background -->
-                    <div class="map-grid"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us Section -->
-    <section class="section why-us black-bg" id="why-us">
-        <div class="container">
-            <div class="section-header text-center blur-appear">
-                <h2>Why Choose SkyStrike</h2>
-                <p>The clear advantage in digital outdoor advertising.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-item blur-appear">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                        </svg>
-                    </div>
-                    <h4>Massive Traffic Visibility</h4>
-                    <p>Captive audience of millions in slow-moving traffic.</p>
-                </div>
-                <div class="feature-item blur-appear delay-1">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" />
-                        </svg>
-                    </div>
-                    <h4>Ultra-Bright 4K Panels</h4>
-                    <p>Crystal clear visibility day or night, ensuring vivid brand recall.</p>
-                </div>
-                <div class="feature-item blur-appear delay-2">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-                        </svg>
-                    </div>
-                    <h4>Custom Formations</h4>
-                    <p>Dynamic screen configurations tailored for maximum impact.</p>
-                </div>
-                <div class="feature-item blur-appear delay-3">
-                    <div class="icon-box">
-                        <svg viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                    </div>
-                    <h4>High Brand Recall</h4>
-                    <p>Cinematic aesthetics burn your brand identity into the viewer's memory.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Custom Campaign Section -->
-    <section class="section custom-campaign dark-charcoal parallax-section">
-        <div class="campaign-bg parallax-element"></div>
-        <div class="container relative z-index-10 flex-center">
-            <div class="campaign-box glass-panel blur-appear text-center">
-                <h2>Custom Multi-Screen Campaigns</h2>
-                <p>Have an ambitious idea? We can execute full city takeover campaigns spanning multiple locations with
-                    synchronized 3D creatives.</p>
-                <div class="campaign-visual">
-                    <div class="screen-track">
-                        <div class="track-item glow"></div>
-                        <div class="track-item glow delay-1"></div>
-                        <div class="track-item glow delay-2"></div>
-                    </div>
-                </div>
-                <button class="btn btn-outline glow-outline">Discuss Your Vision</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Client Logos Section -->
-    <section class="section clients black-bg">
-        <div class="container text-center">
-            <h5 class="subheading blur-appear">TRUSTED BY LEADING BRANDS</h5>
-            <div class="logo-grid blur-appear delay-1">
-                <div class="brand-logo">BRAND A</div>
-                <div class="brand-logo">BRAND B</div>
-                <div class="brand-logo">BRAND C</div>
-                <div class="brand-logo">BRAND D</div>
-                <div class="brand-logo">BRAND E</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final Call-To-Action -->
-    <section class="final-cta parallax-section" id="contact">
-        <div class="cta-bg parallax-element"></div>
-        <div class="cta-overlay"></div>
-        <div class="container relative z-index-10 text-center blur-appear">
-            <h2 class="huge-text">Ready to Take Your Brand to the<br> <span class="text-red">Biggest Screens</span> in
-                the City?</h2>
-            <div class="cta-actions">
-                <button class="btn btn-primary glow-effect huge-btn">Book Advertisement</button>
-                <button class="btn btn-outline glass-btn huge-btn">Download Media Kit</button>
+            <div class="map-ui" style="padding: 0; background: transparent; border: none; box-shadow: none;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.561563810!2d76.350812315!3d10.110565692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080f08e50b713f%3A0xc6ad5632b70b555e!2sPillar%20No.42%2C%20Aluva%2C%20Kerala!5e0!3m2!1sen!2sin!4v1611111111111!5m2!1sen!2sin"
+                    width="100%" height="450" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer dark-charcoal">
+    <footer class="footer dark-charcoal" id="contact">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo">SKYSTRIKE<span>ADS</span></div>
-                    <p>Premium outdoor digital out-of-home advertising network in Hyderabad.</p>
+                    <a href="#hero" class="logo"><img src="assets/logo.png" alt="SkyStrike Ads"></a>
+                    <p>Premium outdoor digital drone advertising network in Kerala.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#why-us">About Us</a></li>
                         <li><a href="#locations">Locations</a></li>
                         <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <p>booking@skystrikeads.com</p>
-                    <p>+91 90000 00000</p>
-                    <p>Cyber Towers, HITEC City, Hyderabad.</p>
+                    <p><a href="mailto:booking@skystrikeads.com"
+                            style="color: inherit; text-decoration: none;">booking@skystrikeads.com</a></p>
+                    <p><a href="tel:+918921875373" style="color: inherit; text-decoration: none;">+91 89218 75373</a>
+                    </p>
+                    <p>By-pass Road,Pillar No:42,Aluva-683101,Ernakulam,Kerala.</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -361,6 +321,7 @@
             </div>
         </div>
     </footer>
+
 
     <script src="assets/js/scrollytelling.js"></script>
     <script src="assets/js/scripts.js"></script>

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const context = canvas.getContext('2d', { alpha: false });
     const heroSection = document.getElementById('hero');
 
-    const frameCount = 240;
+    const frameCount = 192;
     const currentFrame = index => (
         // The user specified padding with 3 zeros, frame 1 to 240
         `assets/images/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
@@ -124,26 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
             render();
         }
 
-        // --- Handle Text Emergence ---
-        // The drone reaches the right side visually around frame 120
-        if (heroContent) {
-            const fadeStartFrame = 110;  // Start fading in
-            const fadeEndFrame = 160;    // Fully visible
-
-            let textOpacity = 0;
-
-            if (airframes.frame >= fadeStartFrame) {
-                textOpacity = (airframes.frame - fadeStartFrame) / (fadeEndFrame - fadeStartFrame);
-                textOpacity = Math.max(0, Math.min(1, textOpacity)); // Clamp between 0 and 1
-            }
-
-            // Create a sleek upward sliding effect tied strictly to scroll
-            const translateY = 40 * (1 - textOpacity);
-
-            heroContent.style.opacity = textOpacity;
-            heroContent.style.transform = `translateY(${translateY}px)`;
-            heroContent.style.pointerEvents = textOpacity > 0.5 ? 'auto' : 'none'; // Prevent clicks when invisible
-        }
 
         requestAnimationFrame(update);
     };

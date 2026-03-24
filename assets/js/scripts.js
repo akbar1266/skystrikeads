@@ -22,6 +22,34 @@ function scrollToSection(id) {
     }
 }
 
+// Mobile Menu Toggle — global functions called via onclick
+function toggleMobileMenu() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (!hamburger || !mobileMenu) return;
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+}
+
+function closeMobileMenu() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (hamburger) hamburger.classList.remove('open');
+    if (mobileMenu) mobileMenu.classList.remove('open');
+}
+
+// Close menu on outside tap
+document.addEventListener('click', function(e) {
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    if (!mobileMenu || !hamburger) return;
+    if (mobileMenu.classList.contains('open') &&
+        !mobileMenu.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+        closeMobileMenu();
+    }
+});
+
 // Intersection Observer for Animations
 const observeElements = (selector, className) => {
     const elements = document.querySelectorAll(selector);
@@ -65,49 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formationObserver.observe(formationSection);
     }
 
-    // Transition Mode Carousel functionality (Scrolling Type)
-    const transitionCarousel = document.getElementById('transition-carousel');
-    if (transitionCarousel) {
-        const screens = transitionCarousel.querySelectorAll('.screen-box');
-        // Initial setup for positions
-        let positions = ['left', 'center', 'right'];
-
-        // Function to update classes based on positions array
-        const updateCarousel = () => {
-            screens.forEach((screen, i) => {
-                screen.className = 'screen-box ' + (positions[i] === 'center' ? 'primary-screen' : `side-screen ${positions[i]}`);
-            });
-        };
-
-        // Auto-cycle every 3.5 seconds
-        let carouselInterval = setInterval(() => {
-            positions.unshift(positions.pop()); // Rotate the array
-            updateCarousel();
-        }, 3500);
-
-        // Allow manual clicking to cycle
-        screens.forEach((screen, i) => {
-            screen.addEventListener('click', () => {
-                // If they click on the right screen, move right
-                if (positions[i] === 'right') {
-                    positions.unshift(positions.pop());
-                } 
-                // If they click on the left screen, move left
-                else if (positions[i] === 'left') {
-                    positions.push(positions.shift());
-                }
-                updateCarousel();
-                
-                // Reset interval
-                clearInterval(carouselInterval);
-                carouselInterval = setInterval(() => {
-                    positions.unshift(positions.pop());
-                    updateCarousel();
-                }, 3500);
-            });
-        });
-    }
-
     // Auto-cycle map locations
     const dots = document.querySelectorAll('.pulse-dot');
     let activeDotIndex = 0;
@@ -144,3 +129,98 @@ window.addEventListener('scroll', () => {
         }
     });
 });
+
+// Cinematic Carousel Interaction 
+function initCinematicCarousel() {
+    const track = document.getElementById('cinematic-track');
+    const cards = document.querySelectorAll('.cinematic-card-container');
+    if (!track || !cards.length) return;
+
+    function apply3DEffects() {
+        if (!track) return;
+        const viewportCenter = window.innerWidth / 2;
+        
+        cards.forEach(cardContainer => {
+            const rect = cardContainer.getBoundingClientRect();
+            const cardCenter = rect.left + rect.width / 2;
+            const distance = cardCenter - viewportCenter;
+            
+            // Normalize distance based on max dist effect (600px width limit)
+            let normalized = Math.max(-1, Math.min(1, distance / 600)); 
+            
+            const wrapper3d = cardContainer.querySelector('.js-3d-wrapper');
+            const focusCard = cardContainer.querySelector('.cinematic-card');
+            if(!wrapper3d || !focusCard) return;
+            
+            const scale = 1 - Math.abs(normalized) * 0.15; // 1 at center, 0.85 at outer edges
+            const rotateY = normalized * -35; 
+            const blurAmt = Math.abs(normalized) * 8;
+            const opacity = 1 - Math.abs(normalized) * 0.6;
+            const zIndex = Math.round((1 - Math.abs(normalized)) * 100);
+            const translateZ = Math.abs(normalized) * -100;
+            
+            // Apply JS transform specifically to the wrapper to not conflict with CSS floating animation
+            wrapper3d.style.transform = `scale(${scale}) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
+            wrapper3d.style.filter = `blur(${Math.max(0, blurAmt)}px) brightness(${1 - Math.abs(normalized)*0.5})`;
+            wrapper3d.style.opacity = Math.max(0.3, opacity);
+            cardContainer.style.zIndex = zIndex; 
+            
+            if (Math.abs(normalized) < 0.15) {
+                focusCard.classList.add('focused-glow');
+            } else {
+                focusCard.classList.remove('focused-glow');
+            }
+        });
+    }
+
+    // Scroll drag mechanism for Desktop
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    track.addEventListener('mousedown', (e) => {
+        isDown = true;
+        track.classList.add('active'); 
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+    });
+
+    track.addEventListener('mouseleave', () => {
+        isDown = false;
+        track.classList.remove('active');
+    });
+
+    track.addEventListener('mouseup', () => {
+        isDown = false;
+        track.classList.remove('active');
+    });
+
+    track.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 2.5; // the multiplier represents scroll speed
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    track.addEventListener('scroll', () => {
+        requestAnimationFrame(apply3DEffects);
+    });
+    
+    window.addEventListener('resize', () => {
+        requestAnimationFrame(apply3DEffects);
+    });
+    
+    // Initial call after small delay for layout calculations to finish rendering correctly
+    setTimeout(() => {
+        requestAnimationFrame(apply3DEffects);
+        // center the track perfectly automatically (e.g. scroll slowly)
+        // track.scrollLeft = (track.scrollWidth - track.clientWidth) / 2;
+    }, 150);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCinematicCarousel);
+} else {
+    initCinematicCarousel();
+}
