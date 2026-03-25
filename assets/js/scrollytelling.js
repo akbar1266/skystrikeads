@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!canvas) return;
 
     const heroContent = document.querySelector('.hero-content');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
 
     // Use alpha: false for better performance when we don't need transparency on the canvas itself
     const context = canvas.getContext('2d', { alpha: false });
@@ -55,7 +56,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lower easing multiplier => smoother interpolated motion
     const ease = 0.07;
 
-    // Calculate frame based on scroll
+    // ── Scroll phase split ────────────────────────────────────────
+    // 0.00 → 0.75 : frame animation plays through all 192 frames
+    // 0.75 → 1.00 : frame locked at last frame, text stays visible
+    const ANIMATION_END = 0.75; // scroll fraction when all 192 frames finish
+
+    // Frame 180 out of 192 maps to scroll fraction within animation window:
+    // ANIMATION_END * (179/191) ≈ 0.703
+    const FADE_IN_START = ANIMATION_END * (179 / 191); // scroll fraction at frame 180
+    const FADE_IN_END   = ANIMATION_END;               // scroll fraction at frame 192
+
+    // ── Hero text fade-IN ─────────────────────────────────────────
+    // Hide text at the beginning; fade it in starting at frame 180
+    if (heroContent) {
+        heroContent.style.opacity    = '0';
+        heroContent.style.transform  = 'translateY(30px)';
+        heroContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    }
+    if (scrollIndicator) {
+        scrollIndicator.style.opacity    = '0';
+        scrollIndicator.style.transition = 'opacity 0.2s ease';
+    }
+
+    const updateHeroText = (scrollFraction) => {
+        if (!heroContent) return;
+
+        // Fade IN from frame 180 (FADE_IN_START) to frame 192 (FADE_IN_END)
+        const fadeRange    = FADE_IN_END - FADE_IN_START;
+        const fadeProgress = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
+
+        const opacity    = fadeProgress;             // 0 → 1
+        const translateY = (1 - fadeProgress) * 30; // 30px → 0px (rises into place)
+
+        heroContent.style.opacity   = opacity;
+        heroContent.style.transform = `translateY(${translateY}px)`;
+
+        // Scroll indicator fades in with the text
+        if (scrollIndicator) {
+            const indFadeIn = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
+            scrollIndicator.style.opacity = 0.7 * indFadeIn;
+        }
+    };
+
+    // Calculate frame and text opacity based on scroll
     const onScroll = () => {
         const scrollTop = window.scrollY;
 
@@ -67,8 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let scrollFraction = scrollTop / maxScroll;
         scrollFraction = Math.max(0, Math.min(1, scrollFraction));
 
-        // Map 0-1 to frame 1-240
-        targetFrame = 1 + scrollFraction * (frameCount - 1);
+        // Map scroll 0 → ANIMATION_END to frames 1 → 192
+        // Beyond ANIMATION_END the frame is locked at the last frame
+        const frameFraction = Math.min(1, scrollFraction / ANIMATION_END);
+        targetFrame = 1 + frameFraction * (frameCount - 1);
+
+        // Drive hero text fade
+        updateHeroText(scrollFraction);
     };
 
     // Passive listener for scroll performance
@@ -79,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // The render function handles "object-fit: cover" natively drawn on canvas
     const render = () => {
-        // Clamp to valid array indices (0 to 239)
+        // Clamp to valid array indices (0 to frameCount-1)
         let frameIndex = Math.round(airframes.frame) - 1;
         frameIndex = Math.max(0, Math.min(frameCount - 1, frameIndex));
 
@@ -123,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             airframes.frame = targetFrame;
             render();
         }
-
 
         requestAnimationFrame(update);
     };

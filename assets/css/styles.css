@@ -21,7 +21,7 @@
 
 html {
     scroll-behavior: smooth;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 body {
@@ -45,22 +45,22 @@ h6 {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 4.3rem;
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 3.2rem;
     margin-bottom: 1rem;
 }
 
 h3 {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
     margin-bottom: 0.5rem;
 }
 
 p {
     color: var(--text-muted);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 /* Utilities */
@@ -281,7 +281,7 @@ p {
     border-bottom: 2px solid rgba(229, 9, 20, 0.4);
     transform: translateY(-110%);
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    padding-top: 130px; /* clears the navbar */
+    padding-top: 80px; /* clears the navbar */
     padding-bottom: 1rem;
 }
 
@@ -1314,11 +1314,12 @@ p {
 
 @media (max-width: 768px) {
     .logo img {
-        height: 90px;
+        height: 45px;
     }
 
     .hamburger {
         display: flex;
+        align-self: center;
     }
 
     .nav-links {
@@ -1370,6 +1371,19 @@ p {
     .formation-text,
     .formation-animation {
         text-align: center;
+    }
+
+    .about-image {
+        width: 100% !important;
+        min-width: unset !important;
+        text-align: center !important;
+        margin: 0 auto;
+    }
+
+    .about-image img {
+        max-width: 90% !important;
+        margin: 0 auto;
+        display: block;
     }
 }
 
