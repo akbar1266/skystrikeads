@@ -39,7 +39,7 @@ function closeMobileMenu() {
 }
 
 // Close menu on outside tap
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     var hamburger = document.getElementById('hamburger');
     var mobileMenu = document.getElementById('mobile-menu');
     if (!mobileMenu || !hamburger) return;
@@ -139,84 +139,93 @@ function initCinematicCarousel() {
     function apply3DEffects() {
         if (!track) return;
         const viewportCenter = window.innerWidth / 2;
-        
+
         cards.forEach(cardContainer => {
             const rect = cardContainer.getBoundingClientRect();
-            const cardCenter = rect.left + rect.width / 2;
-            const distance = cardCenter - viewportCenter;
-            
-            // Normalize distance based on max dist effect (600px width limit)
-            let normalized = Math.max(-1, Math.min(1, distance / 600)); 
-            
-            const wrapper3d = cardContainer.querySelector('.js-3d-wrapper');
-            const focusCard = cardContainer.querySelector('.cinematic-card');
-            if(!wrapper3d || !focusCard) return;
-            
-            const scale = 1 - Math.abs(normalized) * 0.15; // 1 at center, 0.85 at outer edges
-            const rotateY = normalized * -35; 
-            const blurAmt = Math.abs(normalized) * 8;
-            const opacity = 1 - Math.abs(normalized) * 0.6;
-            const zIndex = Math.round((1 - Math.abs(normalized)) * 100);
-            const translateZ = Math.abs(normalized) * -100;
-            
-            // Apply JS transform specifically to the wrapper to not conflict with CSS floating animation
-            wrapper3d.style.transform = `scale(${scale}) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
-            wrapper3d.style.filter = `blur(${Math.max(0, blurAmt)}px) brightness(${1 - Math.abs(normalized)*0.5})`;
-            wrapper3d.style.opacity = Math.max(0.3, opacity);
-            cardContainer.style.zIndex = zIndex; 
-            
-            if (Math.abs(normalized) < 0.15) {
-                focusCard.classList.add('focused-glow');
-            } else {
-                focusCard.classList.remove('focused-glow');
+            if (rect.left < window.innerWidth && rect.right > 0) {
+                const cardCenter = rect.left + rect.width / 2;
+                const distance = cardCenter - viewportCenter;
+                let normalized = Math.max(-1, Math.min(1, distance / 600));
+
+                const wrapper3d = cardContainer.querySelector('.js-3d-wrapper');
+                const focusCard = cardContainer.querySelector('.cinematic-card');
+                if (!wrapper3d || !focusCard) return;
+
+                const scale = 1 - Math.abs(normalized) * 0.15;
+                const rotateY = normalized * -35;
+                const blurAmt = Math.abs(normalized) * 8;
+                const opacity = 1 - Math.abs(normalized) * 0.6;
+                const zIndex = Math.round((1 - Math.abs(normalized)) * 100);
+                const translateZ = Math.abs(normalized) * -100;
+
+                wrapper3d.style.transform = `scale(${scale}) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
+                wrapper3d.style.filter = `blur(${Math.max(0, blurAmt)}px) brightness(${1 - Math.abs(normalized) * 0.5})`;
+                wrapper3d.style.opacity = Math.max(0.3, opacity);
+                cardContainer.style.zIndex = zIndex;
+
+                if (Math.abs(normalized) < 0.15) {
+                    focusCard.classList.add('focused-glow');
+                } else {
+                    focusCard.classList.remove('focused-glow');
+                }
             }
         });
     }
 
-    // Scroll drag mechanism for Desktop
+    // --- High-Performance Manual Drive (with Lerp) ---
     let isDown = false;
-    let startX;
-    let scrollLeft;
+    let startX, scrollLeftAtStart;
+    let targetScroll = track.scrollLeft;
+    let currentScroll = track.scrollLeft;
+    const scrollEase = 0.15; // smoothness factor
+
+    function rafLoop() {
+        // Only lerp when the user is actively dragging or we need to catch up
+        if (isDown) {
+            currentScroll += (targetScroll - currentScroll) * scrollEase;
+            track.scrollLeft = currentScroll;
+        } else {
+            // Stop lerping once user lets go, letting browser native scroll-snap take over
+            currentScroll = track.scrollLeft;
+            targetScroll = track.scrollLeft;
+        }
+        
+        apply3DEffects();
+        requestAnimationFrame(rafLoop);
+    }
 
     track.addEventListener('mousedown', (e) => {
         isDown = true;
-        track.classList.add('active'); 
+        track.classList.add('active'); // CSS uses this to disable snap during move
         startX = e.pageX - track.offsetLeft;
-        scrollLeft = track.scrollLeft;
+        scrollLeftAtStart = track.scrollLeft;
+        targetScroll = track.scrollLeft;
+        currentScroll = track.scrollLeft;
     });
 
-    track.addEventListener('mouseleave', () => {
+    const stopDragging = () => {
+        if (!isDown) return;
         isDown = false;
-        track.classList.remove('active');
-    });
+        track.classList.remove('active'); // CSS uses this to re-enable snap
+    };
 
-    track.addEventListener('mouseup', () => {
-        isDown = false;
-        track.classList.remove('active');
-    });
+    track.addEventListener('mouseleave', stopDragging);
+    window.addEventListener('mouseup', stopDragging); // Global release for safety
 
     track.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 2.5; // the multiplier represents scroll speed
-        track.scrollLeft = scrollLeft - walk;
+        const walk = (x - startX) * 2; 
+        targetScroll = scrollLeftAtStart - walk;
     });
 
-    track.addEventListener('scroll', () => {
-        requestAnimationFrame(apply3DEffects);
-    });
-    
     window.addEventListener('resize', () => {
         requestAnimationFrame(apply3DEffects);
     });
-    
-    // Initial call after small delay for layout calculations to finish rendering correctly
-    setTimeout(() => {
-        requestAnimationFrame(apply3DEffects);
-        // center the track perfectly automatically (e.g. scroll slowly)
-        // track.scrollLeft = (track.scrollWidth - track.clientWidth) / 2;
-    }, 150);
+
+    // Start Loop
+    rafLoop();
 }
 
 if (document.readyState === 'loading') {

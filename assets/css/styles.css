@@ -230,8 +230,8 @@ p {
     width: 42px;
     height: 42px;
     gap: 6px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
     cursor: pointer;
     padding: 0;
@@ -259,10 +259,12 @@ p {
 .hamburger.open span:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
 }
+
 .hamburger.open span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
 }
+
 .hamburger.open span:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
 }
@@ -281,7 +283,8 @@ p {
     border-bottom: 2px solid rgba(229, 9, 20, 0.4);
     transform: translateY(-110%);
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    padding-top: 80px; /* clears the navbar */
+    padding-top: 80px;
+    /* clears the navbar */
     padding-bottom: 1rem;
 }
 
@@ -1523,13 +1526,17 @@ p {
     gap: 3rem;
     align-items: center;
     scroll-behavior: smooth;
-    cursor: grab;
     width: 100%;
+    user-select: none;
+    transition: background 0.3s ease;
 }
 
-.cinematic-scroll-track:active {
+.cinematic-scroll-track.active {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
     cursor: grabbing;
 }
+
 
 .cinematic-scroll-track::-webkit-scrollbar {
     display: none;
@@ -1613,7 +1620,7 @@ p {
 
 .cinematic-card-img {
     width: 100%;
-    height: 50%;
+    height: 65%;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -1633,6 +1640,7 @@ p {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     background: rgba(18, 18, 22, 1);
 }
 
@@ -1640,7 +1648,7 @@ p {
     font-size: 1.6rem;
     color: white;
     font-family: var(--font-heading);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 

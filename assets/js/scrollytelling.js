@@ -53,70 +53,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let targetFrame = 1;
-    // Lower easing multiplier => smoother interpolated motion
-    const ease = 0.07;
+    let currentScrollFraction = 0;   // lerped scroll value – drives frames smoothly
+    let rawScrollFraction     = 0;   // set instantly on every scroll event
+
+    // ease: how quickly the frame catches up to the scroll target
+    // Lower = silkier / more gradual   Higher = snappier / more responsive
+    const ease = 0.04;
 
     // ── Scroll phase split ────────────────────────────────────────
     // 0.00 → 0.75 : frame animation plays through all 192 frames
     // 0.75 → 1.00 : frame locked at last frame, text stays visible
     const ANIMATION_END = 0.75; // scroll fraction when all 192 frames finish
 
-    // Frame 180 out of 192 maps to scroll fraction within animation window:
-    // ANIMATION_END * (179/191) ≈ 0.703
-    const FADE_IN_START = ANIMATION_END * (179 / 191); // scroll fraction at frame 180
+    // Frame 170 out of 192 → fade starts earlier for a wider, more gradual reveal
+    // ANIMATION_END * (169/191) ≈ 0.664
+    const FADE_IN_START = ANIMATION_END * (169 / 191); // scroll fraction at frame 170
     const FADE_IN_END   = ANIMATION_END;               // scroll fraction at frame 192
 
+    // ── Lerped text values (updated every RAF frame for silky fade) ──
+    let currentTextOpacity = 0;   // actual rendered opacity, lerped each frame
+    let targetTextOpacity  = 0;   // desired opacity from scroll position
+    let currentTextY       = 30;  // actual translateY (px), lerped each frame
+    let targetTextY        = 30;  // desired translateY from scroll position
+    const TEXT_EASE = 0.06;       // independent ease for text — slower = silkier
+
     // ── Hero text fade-IN ─────────────────────────────────────────
-    // Hide text at the beginning; fade it in starting at frame 180
+    // Disable CSS transitions — JS lerp handles all smoothness
     if (heroContent) {
         heroContent.style.opacity    = '0';
         heroContent.style.transform  = 'translateY(30px)';
-        heroContent.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        heroContent.style.transition = 'none';
+        heroContent.style.willChange = 'opacity, transform';
     }
     if (scrollIndicator) {
         scrollIndicator.style.opacity    = '0';
-        scrollIndicator.style.transition = 'opacity 0.2s ease';
+        scrollIndicator.style.transition = 'none';
     }
 
     const updateHeroText = (scrollFraction) => {
         if (!heroContent) return;
 
-        // Fade IN from frame 180 (FADE_IN_START) to frame 192 (FADE_IN_END)
-        const fadeRange    = FADE_IN_END - FADE_IN_START;
+        // Calculate TARGET opacity/Y from scroll — actual rendering is lerped in RAF
+        const fadeRange = FADE_IN_END - FADE_IN_START;
         const fadeProgress = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
 
-        const opacity    = fadeProgress;             // 0 → 1
-        const translateY = (1 - fadeProgress) * 30; // 30px → 0px (rises into place)
-
-        heroContent.style.opacity   = opacity;
-        heroContent.style.transform = `translateY(${translateY}px)`;
-
-        // Scroll indicator fades in with the text
-        if (scrollIndicator) {
-            const indFadeIn = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
-            scrollIndicator.style.opacity = 0.7 * indFadeIn;
-        }
+        targetTextOpacity = fadeProgress;             // 0 → 1
+        targetTextY       = (1 - fadeProgress) * 30; // 30px → 0px
     };
 
-    // Calculate frame and text opacity based on scroll
+    // Calculate raw scroll fraction instantly on every scroll event
     const onScroll = () => {
         const scrollTop = window.scrollY;
-
-        // Calculate the maximum distance that can be scrolled within the hero section
-        // Note: the hero is 400vh tall, and its sticky container is 100vh.
         const maxScroll = heroSection.scrollHeight - window.innerHeight;
-
-        // Calculate scroll progress (0.0 to 1.0)
-        let scrollFraction = scrollTop / maxScroll;
-        scrollFraction = Math.max(0, Math.min(1, scrollFraction));
-
-        // Map scroll 0 → ANIMATION_END to frames 1 → 192
-        // Beyond ANIMATION_END the frame is locked at the last frame
-        const frameFraction = Math.min(1, scrollFraction / ANIMATION_END);
-        targetFrame = 1 + frameFraction * (frameCount - 1);
-
-        // Drive hero text fade
-        updateHeroText(scrollFraction);
+        rawScrollFraction = Math.max(0, Math.min(1, scrollTop / maxScroll));
     };
 
     // Passive listener for scroll performance
@@ -159,15 +148,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 60FPS Render Loop using requestAnimationFrame
     const update = () => {
-        // Linear interpolation for silky smooth scrub
-        const diff = targetFrame - airframes.frame;
+        // ── Step 1: smoothly lerp the scroll fraction itself ──────
+        // This prevents sudden frame jumps on fast scroll flicks.
+        const scrollDiff = rawScrollFraction - currentScrollFraction;
+        if (Math.abs(scrollDiff) > 0.0001) {
+            currentScrollFraction += scrollDiff * ease;
+        } else {
+            currentScrollFraction = rawScrollFraction;
+        }
 
-        // Threshold check avoids unneeded redundant draws when idle
-        if (Math.abs(diff) > 0.01) {
-            airframes.frame += diff * ease;
+        // ── Step 2: map smoothed scroll → target frame ────────────
+        const frameFraction = Math.min(1, currentScrollFraction / ANIMATION_END);
+        targetFrame = 1 + frameFraction * (frameCount - 1);
+
+        // ── Step 3: update target text values from smoothed scroll ─
+        updateHeroText(currentScrollFraction);
+
+        // ── Step 4: lerp text opacity & Y independently ────────────
+        // This gives the fade its own silky motion, unaffected by scroll speed.
+        currentTextOpacity += (targetTextOpacity - currentTextOpacity) * TEXT_EASE;
+        currentTextY       += (targetTextY       - currentTextY)       * TEXT_EASE;
+
+        if (heroContent) {
+            heroContent.style.opacity   = currentTextOpacity.toFixed(4);
+            heroContent.style.transform = `translateY(${currentTextY.toFixed(3)}px)`;
+        }
+        if (scrollIndicator) {
+            scrollIndicator.style.opacity = (0.7 * currentTextOpacity).toFixed(4);
+        }
+
+        // ── Step 5: lerp the displayed frame toward target ────────
+        const frameDiff = targetFrame - airframes.frame;
+        if (Math.abs(frameDiff) > 0.01) {
+            airframes.frame += frameDiff * ease;
             render();
-        } else if (Math.round(airframes.frame) !== Math.round(targetFrame)) {
-            // Snap to target exactly and ensure it paints
+        } else if (airframes.frame !== targetFrame) {
             airframes.frame = targetFrame;
             render();
         }
