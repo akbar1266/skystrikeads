@@ -260,6 +260,34 @@ function initCinematicCarousel() {
         nextBtn.addEventListener('touchstart', handleNext, {passive: false});
     }
 
+    // Autoplay functionality
+    let autoplayInterval;
+    const startAutoplay = () => {
+        autoplayInterval = setInterval(() => {
+            // Check if user is actively dragging, if not, perform scroll
+            if (!track.classList.contains('active')) {
+                if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                    // Smoothly scroll back to the start
+                    triggerAutoScroll(-track.scrollLeft); 
+                } else {
+                    // Scroll to next card
+                    triggerAutoScroll(getScrollOffset());
+                }
+            }
+        }, 3000); // Automatic scroll interval
+    };
+
+    const stopAutoplay = () => {
+        clearInterval(autoplayInterval);
+    };
+
+    track.addEventListener('mouseenter', stopAutoplay);
+    track.addEventListener('mouseleave', startAutoplay);
+    track.addEventListener('touchstart', stopAutoplay, { passive: true });
+    track.addEventListener('touchend', startAutoplay);
+
+    startAutoplay();
+
     // Start Loop
     rafLoop();
 }
