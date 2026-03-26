@@ -48,7 +48,7 @@
             <canvas id="hero-canvas"></canvas>
             <div class="hero-bg parallax-bg"></div>
             <div class="hero-content">
-                <h1 class="hero-title">Sky Strike Ads transforms the sky into your brand’s stage.</h1>
+                <h1 class="hero-title">Transforms the sky into your brand’s stage.</h1>
                 <p class="hero-subtext">High-impact outdoor LED advertising across Hyderabad with
                     ultra-bright 4K LED displays.</p>
                 <div class="hero-buttons">
@@ -94,8 +94,28 @@
     <section class="section services-cinematic black-bg parallax-section" id="services">
         <div class="cinematic-bg parallax-element"></div>
 
-        <div class="cinematic-carousel-wrapper">
+        <div class="cinematic-carousel-wrapper" style="position: relative; overflow: hidden; width: 100%;">
             <h3 class="cinematic-heading blur-appear">OUR SERVICES</h3>
+
+            <div class="carousel-side-cover blur-appear delay-1"
+                style="position: absolute; top: 0; left: 0; width: clamp(40px, 15vw, 120px); height: 100%; z-index: 250; display: flex; align-items: center; justify-content: flex-start; padding-left: max(1vw, 10px); pointer-events: none; background: linear-gradient(to right, #000000 40%, transparent);">
+                <button class="carousel-btn" id="carousel-prev" aria-label="Previous"
+                    style="pointer-events: auto; width: 50px; height: 50px; flex-shrink: 0; transform: translateY(-5%); z-index: 250;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" style="margin-right: 2px;">
+                        <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="carousel-side-cover blur-appear delay-1"
+                style="position: absolute; top: 0; right: 0; width: clamp(40px, 15vw, 120px); height: 100%; z-index: 250; display: flex; align-items: center; justify-content: flex-end; padding-right: max(1vw, 10px); pointer-events: none; background: linear-gradient(to left, #000000 40%, transparent);">
+                <button class="carousel-btn" id="carousel-next" aria-label="Next"
+                    style="pointer-events: auto; width: 50px; height: 50px; flex-shrink: 0; transform: translateY(-5%); z-index: 250;">
+                    <svg viewBox="0 0 24 24" width="28" height="28" style="margin-left: 2px;">
+                        <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                    </svg>
+                </button>
+            </div>
 
             <div class="cinematic-scroll-track" id="cinematic-track">
 
@@ -149,8 +169,7 @@
                     <div class="js-3d-wrapper">
                         <div class="cinematic-card-floater">
                             <div class="cinematic-card">
-                                <div class="cinematic-card-img"
-                                    style="background-image: url('assets/political.jpeg');">
+                                <div class="cinematic-card-img" style="background-image: url('assets/political.jpeg');">
                                 </div>
                                 <div class="cinematic-card-body">
                                     <h4>Political Campaign Promotions</h4>
@@ -165,8 +184,7 @@
                     <div class="js-3d-wrapper">
                         <div class="cinematic-card-floater">
                             <div class="cinematic-card">
-                                <div class="cinematic-card-img"
-                                    style="background-image: url('assets/textile.jpeg');">
+                                <div class="cinematic-card-img" style="background-image: url('assets/textile.jpeg');">
                                 </div>
                                 <div class="cinematic-card-body">
                                     <h4>Jewellery & Textile</h4>
@@ -181,8 +199,7 @@
                     <div class="js-3d-wrapper">
                         <div class="cinematic-card-floater">
                             <div class="cinematic-card">
-                                <div class="cinematic-card-img"
-                                    style="background-image: url('assets/happy.jpeg');">
+                                <div class="cinematic-card-img" style="background-image: url('assets/happy.jpeg');">
                                 </div>
                                 <div class="cinematic-card-body">
                                     <h4>Birthday Wishes</h4>
@@ -196,8 +213,9 @@
             </div>
 
             <div class="scroll-instruction text-center blur-appear delay-1">
-                <span class="pulse-text">← Swipe horizontally to explore →</span>
+                <span class="pulse-text">&#8592; Swipe horizontally to explore &#8594;</span>
             </div>
+
         </div>
     </section>
 
@@ -219,7 +237,7 @@
                     <ul class="features">
                         <li><svg viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                            </svg>10 × 20 ft Screen</li>
+                            </svg>06 × 16 ft Screen</li>
                         <li><svg viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                             </svg> MP4 Format Support</li>
@@ -238,7 +256,7 @@
                 </div>
 
                 <div class="pricing-card glass-panel blur-appear">
-                    <h4>10 × 20 ft Screen</h4>
+                    <h4>06 × 16 ft Screen</h4>
                     <div class="price">
                         <span class="currency">₹</span><span class="amount">1,80,000</span>
                     </div>
@@ -259,7 +277,7 @@
                                 <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                             </svg> Free social media promotion video</li>
                     </ul>
-                    <a href="https://wa.me/918921875373?text=Hello!%20I%20am%20interested%20in%20booking%20the%20'10%20%C3%97%2020%20ft%20Screen'%20plan%20for%20%E2%82%B91,80,000.%20Please%20provide%20more%20information."
+                    <a href="https://wa.me/918921875373?text=Hello!%20I%20am%20interested%20in%20booking%20the%20'06%20%C3%97%2016%20ft%20Screen'%20plan%20for%20%E2%82%B91,80,000.%20Please%20provide%20more%20information."
                         target="_blank" class="btn btn-outline full-width">Book Formation</a>
                 </div>
             </div>

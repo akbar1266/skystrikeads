@@ -224,6 +224,42 @@ function initCinematicCarousel() {
         requestAnimationFrame(apply3DEffects);
     });
 
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+
+    let autoScrollingTimeout = null;
+    const triggerAutoScroll = (offset) => {
+        isDown = true;
+        track.classList.add('active'); // disable scroll snap natively
+        targetScroll = currentScroll + offset;
+        
+        clearTimeout(autoScrollingTimeout);
+        autoScrollingTimeout = setTimeout(() => {
+            isDown = false;
+            track.classList.remove('active');
+        }, 600);
+    };
+
+    const getScrollOffset = () => {
+        const cardsArray = track.querySelectorAll('.cinematic-card-container');
+        if (cardsArray.length >= 2) {
+            return cardsArray[1].offsetLeft - cardsArray[0].offsetLeft;
+        }
+        return cardsArray[0] ? cardsArray[0].offsetWidth + 24 : 300;
+    };
+
+    if (prevBtn) {
+        const handlePrev = (e) => { e.preventDefault(); triggerAutoScroll(-getScrollOffset()); };
+        prevBtn.addEventListener('click', handlePrev);
+        prevBtn.addEventListener('touchstart', handlePrev, {passive: false});
+    }
+
+    if (nextBtn) {
+        const handleNext = (e) => { e.preventDefault(); triggerAutoScroll(getScrollOffset()); };
+        nextBtn.addEventListener('click', handleNext);
+        nextBtn.addEventListener('touchstart', handleNext, {passive: false});
+    }
+
     // Start Loop
     rafLoop();
 }
