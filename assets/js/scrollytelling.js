@@ -54,39 +54,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let targetFrame = 1;
     let currentScrollFraction = 0;   // lerped scroll value – drives frames smoothly
-    let rawScrollFraction     = 0;   // set instantly on every scroll event
+    let rawScrollFraction = 0;   // set instantly on every scroll event
 
     // ease: how quickly the frame catches up to the scroll target
     // Lower = silkier / more gradual   Higher = snappier / more responsive
     const ease = 0.04;
 
     // ── Scroll phase split ────────────────────────────────────────
-    // 0.00 → 0.75 : frame animation plays through all 192 frames
-    // 0.75 → 1.00 : frame locked at last frame, text stays visible
-    const ANIMATION_END = 0.75; // scroll fraction when all 192 frames finish
+    // For smaller screens, 0.75 is fine to leave room for reading.
+    // For lap/desktop view, freezing at 0.75 leaves a huge gap of dead scroll.
+    // So if the screen is wider than 768px, we make it play evenly until 1.0 (end of scroll limit).
+    const ANIMATION_END = window.innerWidth > 768 ? 1.0 : 0.75;
 
     // Frame 170 out of 192 → fade starts earlier for a wider, more gradual reveal
     // ANIMATION_END * (169/191) ≈ 0.664
     const FADE_IN_START = ANIMATION_END * (169 / 191); // scroll fraction at frame 170
-    const FADE_IN_END   = ANIMATION_END;               // scroll fraction at frame 192
+    const FADE_IN_END = ANIMATION_END;               // scroll fraction at frame 192
 
     // ── Lerped text values (updated every RAF frame for silky fade) ──
     let currentTextOpacity = 0;   // actual rendered opacity, lerped each frame
-    let targetTextOpacity  = 0;   // desired opacity from scroll position
-    let currentTextY       = 30;  // actual translateY (px), lerped each frame
-    let targetTextY        = 30;  // desired translateY from scroll position
+    let targetTextOpacity = 0;   // desired opacity from scroll position
+    let currentTextY = 30;  // actual translateY (px), lerped each frame
+    let targetTextY = 30;  // desired translateY from scroll position
     const TEXT_EASE = 0.06;       // independent ease for text — slower = silkier
 
     // ── Hero text fade-IN ─────────────────────────────────────────
     // Disable CSS transitions — JS lerp handles all smoothness
     if (heroContent) {
-        heroContent.style.opacity    = '0';
-        heroContent.style.transform  = 'translateY(30px)';
+        heroContent.style.opacity = '0';
+        heroContent.style.transform = 'translateY(30px)';
         heroContent.style.transition = 'none';
         heroContent.style.willChange = 'opacity, transform';
     }
     if (scrollIndicator) {
-        scrollIndicator.style.opacity    = '0';
+        scrollIndicator.style.opacity = '0';
         scrollIndicator.style.transition = 'none';
     }
 
@@ -98,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const fadeProgress = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
 
         targetTextOpacity = fadeProgress;             // 0 → 1
-        targetTextY       = (1 - fadeProgress) * 30; // 30px → 0px
+        targetTextY = (1 - fadeProgress) * 30; // 30px → 0px
     };
 
     // Calculate raw scroll fraction instantly on every scroll event
@@ -139,7 +140,23 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             drawWidth = canvas.height * imgRatio;
             drawHeight = canvas.height;
-            offsetX = (canvas.width - drawWidth) / 2;
+
+            // Mobile specific logic to make the camera follow the drone
+            if (window.innerWidth <= 768) {
+                const progress = (airframes.frame - 1) / (frameCount - 1);
+
+                // To keep the drone consistently on the RIGHT side of the mobile screen,
+                // we map the panning alignment from 0.3 (start) to 0.7 (end). 
+                // Any alignment closer to 1.0 pans the camera too far right, 
+                // pushing the drone back towards the left of the screen.
+                const easeOutSine = Math.sin((progress * Math.PI) / 2);
+                const alignment = 0.3 + 0.4 * easeOutSine;
+
+                offsetX = (canvas.width - drawWidth) * alignment;
+            } else {
+                offsetX = (canvas.width - drawWidth) / 2;
+            }
+
             offsetY = 0;
         }
 
@@ -167,10 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // ── Step 4: lerp text opacity & Y independently ────────────
         // This gives the fade its own silky motion, unaffected by scroll speed.
         currentTextOpacity += (targetTextOpacity - currentTextOpacity) * TEXT_EASE;
-        currentTextY       += (targetTextY       - currentTextY)       * TEXT_EASE;
+        currentTextY += (targetTextY - currentTextY) * TEXT_EASE;
 
         if (heroContent) {
-            heroContent.style.opacity   = currentTextOpacity.toFixed(4);
+            heroContent.style.opacity = currentTextOpacity.toFixed(4);
             heroContent.style.transform = `translateY(${currentTextY.toFixed(3)}px)`;
         }
         if (scrollIndicator) {
