@@ -1314,6 +1314,10 @@ p {
     }
 }
 
+.mobile-extra-why-us {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .logo img {
         height: 45px;
@@ -1384,6 +1388,16 @@ p {
         text-align: center;
     }
 
+    .about-content {
+        padding: 1.5rem 0.5rem !important;
+    }
+
+    .mobile-extra-why-us {
+        display: block !important;
+        margin-bottom: 3rem;
+        margin-top: -2rem;
+    }
+
     .about-image {
         width: 100% !important;
         min-width: unset !important;
@@ -1392,9 +1406,11 @@ p {
     }
 
     .about-image img {
-        max-width: 90% !important;
+        max-width: 100% !important;
+        width: 100% !important;
         margin: 0 auto;
         display: block;
+        transform: scale(1.05);
     }
 }
 
@@ -1776,6 +1792,7 @@ p {
         bottom: 20px;
         right: 20px;
     }
+
     .whatsapp-float svg {
         width: 30px;
         height: 30px;
