@@ -5,9 +5,9 @@ const heroSection = document.getElementById('hero');
 window.addEventListener('scroll', () => {
     // Get the bottom offset of the hero section for the threshold
     const heroBottom = heroSection ? heroSection.offsetTop + heroSection.offsetHeight : 50;
-
-    // Add the solid background only after scrolling past the hero section
-    if (window.scrollY > heroBottom - 80) { // 80px buffer for smooth transition before leaving the section
+    
+    // Fade in the navbar after scrolling past the hero section's animation
+    if (window.scrollY > heroBottom - window.innerHeight) { 
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
