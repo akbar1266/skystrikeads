@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ══════════════════════════════════════════
+       SkyStrike Ads — XML Sitemap
+       Domain  : https://www.skystrikeads.com
+       Updated : 2026-04-01
+  ══════════════════════════════════════════ -->
+
+  <!-- Homepage / Hero -->
+  <url>
+    <loc>https://www.skystrikeads.com/</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/logo.png</image:loc>
+      <image:title>SkyStrike Ads Logo — Premium Outdoor LED Advertising Kerala</image:title>
+      <image:caption>SkyStrike Ads delivers high-impact LED and drone advertising in Kochi, Kerala.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About / Why Us Section -->
+  <url>
+    <loc>https://www.skystrikeads.com/#why-us</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/why%20us.jpeg</image:loc>
+      <image:title>Sky Strike Ads Drone Advertisement — Why Choose Us</image:title>
+      <image:caption>Innovative aerial and LED campaigns that capture attention across Kerala's skyline.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Services Section -->
+  <url>
+    <loc>https://www.skystrikeads.com/#services</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/aerial%20led.jpeg</image:loc>
+      <image:title>Aerial LED Advertising Kerala — SkyStrike Ads</image:title>
+      <image:caption>Aerial LED advertising at high-traffic locations across Kochi and Aluva.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/brand.jpeg</image:loc>
+      <image:title>Brand Promotions LED Advertising Kerala</image:title>
+      <image:caption>High-impact brand promotions at concerts and events across Kerala.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/event.png</image:loc>
+      <image:title>Event Advertising LED Display Kerala</image:title>
+      <image:caption>LED display advertising for events, product launches and promotions.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/political.jpeg</image:loc>
+      <image:title>Political Campaign LED Advertising Kerala</image:title>
+      <image:caption>Powerful political campaign promotions on outdoor LED screens.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/textile.jpeg</image:loc>
+      <image:title>Jewellery and Textile LED Advertising Kochi</image:title>
+      <image:caption>High footfall jewellery and textile promotions near commercial hubs.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.skystrikeads.com/assets/happy.jpeg</image:loc>
+      <image:title>Birthday Wishes LED Display Kochi Kerala</image:title>
+      <image:caption>Personalised birthday wishes and personal messages on LED screens.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Pricing Section -->
+  <url>
+    <loc>https://www.skystrikeads.com/#pricing</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Locations Section -->
+  <url>
+    <loc>https://www.skystrikeads.com/#locations</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact / Footer Section -->
+  <url>
+    <loc>https://www.skystrikeads.com/#contact</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

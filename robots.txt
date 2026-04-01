@@ -1,0 +1,15 @@
+# ══════════════════════════════════════════
+# SkyStrike Ads — robots.txt
+# https://www.skystrikeads.com
+# ══════════════════════════════════════════
+
+# Allow ALL crawlers (Google, Bing, etc.)
+User-agent: *
+Allow: /
+
+# Block crawlers from accessing git/system folders
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Sitemap location — Google reads this automatically
+Sitemap: https://www.skystrikeads.com/sitemap.xml
