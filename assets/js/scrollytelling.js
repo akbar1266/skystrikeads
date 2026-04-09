@@ -61,14 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ease = 0.1;
 
     // ── Scroll phase split ────────────────────────────────────────
-    // Set ANIMATION_END to 1.0 universally to eliminate any dead scrolling gap 
-    // between the animation stopping and the next section appearing.
-    const ANIMATION_END = 1.0;
+    // Drone animation finishes at 65% of the scroll journey so that the remaining
+    // 35% is purely used to reveal the hero text before the next section appears.
+    const ANIMATION_END = 0.65;
 
-    // Frame 170 out of 192 → fade starts earlier for a wider, more gradual reveal
-    // ANIMATION_END * (169/191) ≈ 0.664
-    const FADE_IN_START = ANIMATION_END * (169 / 191); // scroll fraction at frame 170
-    const FADE_IN_END = ANIMATION_END;               // scroll fraction at frame 192
+    // The text fades in exactly AFTER the drone stops.
+    const FADE_IN_START = 0.65; 
+    const FADE_IN_END = 0.85;   
 
     // ── Lerped text values (updated every RAF frame for silky fade) ──
     let currentTextOpacity = 0;   // actual rendered opacity, lerped each frame
@@ -86,26 +85,43 @@ document.addEventListener('DOMContentLoaded', () => {
         heroContent.style.willChange = 'opacity, transform';
     }
     if (scrollIndicator) {
-        scrollIndicator.style.opacity = '0';
+        scrollIndicator.style.opacity = '0.7';
         scrollIndicator.style.transition = 'none';
     }
 
     const updateHeroText = (scrollFraction) => {
         if (!heroContent) return;
 
-        // Calculate TARGET opacity/Y from scroll — actual rendering is lerped in RAF
-        const fadeRange = FADE_IN_END - FADE_IN_START;
-        const fadeProgress = Math.max(0, Math.min(1, (scrollFraction - FADE_IN_START) / fadeRange));
-
-        targetTextOpacity = fadeProgress;             // 0 → 1
-        targetTextY = (1 - fadeProgress) * 30; // 30px → 0px
+        // Failsafe: if scroll is invalid, hide immediately.
+        if (isNaN(scrollFraction) || scrollFraction < FADE_IN_START) {
+            targetTextOpacity = 0;
+            targetTextY = 30;
+            heroContent.style.pointerEvents = 'none';
+        } else if (scrollFraction <= FADE_IN_END) {
+            // Fading in process
+            const fadeProgress = (scrollFraction - FADE_IN_START) / (FADE_IN_END - FADE_IN_START);
+            targetTextOpacity = fadeProgress;             // 0 → 1
+            targetTextY = (1 - fadeProgress) * 30;        // 30px → 0px
+            heroContent.style.pointerEvents = fadeProgress > 0.5 ? 'auto' : 'none';
+        } else {
+            // After fade-in finishes, apply a slight upward parallax so the screen 
+            // never feels completely "stuck" while scrolling the final 15% before next section.
+            targetTextOpacity = 1;
+            const extraProgress = (scrollFraction - FADE_IN_END) / (1.0 - FADE_IN_END);
+            targetTextY = extraProgress * -50;            // 0px → -50px
+            heroContent.style.pointerEvents = 'auto';
+        }
     };
 
     // Calculate raw scroll fraction instantly on every scroll event
     const onScroll = () => {
+        if (!heroSection) return;
         const scrollTop = window.scrollY;
-        const maxScroll = heroSection.scrollHeight - window.innerHeight;
-        rawScrollFraction = Math.max(0, Math.min(1, scrollTop / maxScroll));
+        // Ensure maxScroll > 0 to prevent Infinity or NaN
+        const maxScroll = Math.max(1, heroSection.scrollHeight - window.innerHeight);
+        let fraction = scrollTop / maxScroll;
+        if (isNaN(fraction)) fraction = 0;
+        rawScrollFraction = Math.max(0, Math.min(1, fraction));
     };
 
     // Passive listener for scroll performance
