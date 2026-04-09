@@ -57,14 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let rawScrollFraction = 0;   // set instantly on every scroll event
 
     // ease: how quickly the frame catches up to the scroll target
-    // Lower = silkier / more gradual   Higher = snappier / more responsive
-    const ease = 0.04;
+    // We increase this so it relies on the new Lenis smooth scroll for fluidity instead of lagging behind.
+    const ease = 0.1;
 
     // ── Scroll phase split ────────────────────────────────────────
-    // For smaller screens, 0.75 is fine to leave room for reading.
-    // For lap/desktop view, freezing at 0.75 leaves a huge gap of dead scroll.
-    // So if the screen is wider than 768px, we make it play evenly until 1.0 (end of scroll limit).
-    const ANIMATION_END = window.innerWidth > 768 ? 1.0 : 0.75;
+    // Set ANIMATION_END to 1.0 universally to eliminate any dead scrolling gap 
+    // between the animation stopping and the next section appearing.
+    const ANIMATION_END = 1.0;
 
     // Frame 170 out of 192 → fade starts earlier for a wider, more gradual reveal
     // ANIMATION_END * (169/191) ≈ 0.664
@@ -121,10 +120,32 @@ document.addEventListener('DOMContentLoaded', () => {
         let frameIndex = Math.round(airframes.frame) - 1;
         frameIndex = Math.max(0, Math.min(frameCount - 1, frameIndex));
 
-        const img = images[frameIndex];
+        let img = images[frameIndex];
 
-        // Ensure image exists and is ready
-        if (!img || !img.complete) return;
+        // Ensure image exists and is ready. If not, use the closest loaded frame
+        if (!img || !img.complete) {
+            let found = false;
+            // Search down for the most recently loaded frame (since they load sequentially 0->end)
+            for (let i = frameIndex; i >= 0; i--) {
+                if (images[i] && images[i].complete) {
+                    img = images[i];
+                    found = true;
+                    break;
+                }
+            }
+            // If none found below, search above
+            if (!found) {
+                for (let i = frameIndex + 1; i < frameCount; i++) {
+                    if (images[i] && images[i].complete) {
+                        img = images[i];
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            // If totally no images loaded yet, fallback to css background
+            if (!found) return;
+        }
 
         const canvasRatio = canvas.width / canvas.height;
         const imgRatio = img.width / img.height;

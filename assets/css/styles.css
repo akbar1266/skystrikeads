@@ -20,7 +20,6 @@
 }
 
 html {
-    scroll-behavior: smooth;
     font-size: 17px;
 }
 
@@ -363,6 +362,16 @@ p {
     z-index: 0;
     transform: translateZ(0);
     /* Hardware acceleration */
+    background-image: url('../images/ezgif-frame-001.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+    #hero-canvas {
+        background-position: 30% center;
+    }
 }
 
 /* Gradient overlay for readability removed */
